@@ -1,0 +1,16 @@
+# Dependencies and build output
+node_modules
+.next
+out
+coverage
+
+# Local tooling
+.claude/
+
+# Generated
+next-env.d.ts
+package-lock.json
+
+# Markdown docs are authored in Claude Chat, not formatted here
+*.md
+docs/

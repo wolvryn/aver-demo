@@ -1,0 +1,21 @@
+/**
+ * src/sentry.server.config.ts
+ *
+ * What: Sentry initialization for the Node.js server runtime.
+ * Does: Initializes the Sentry SDK with the DSN from the server-only config module.
+ *       No-ops when the DSN is unset (error tracking degrades gracefully).
+ * Use when: Loaded by src/instrumentation.ts when the runtime is Node.js.
+ */
+
+import * as Sentry from '@sentry/nextjs';
+
+import { getSentryDsn } from '@/lib/config/env';
+
+const dsn = getSentryDsn();
+
+if (dsn) {
+  Sentry.init({
+    dsn,
+    tracesSampleRate: 1.0,
+  });
+}

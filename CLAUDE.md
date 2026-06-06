@@ -6,7 +6,7 @@ Project rules and invariants for this repository. Read before writing code.
 
 ## What this repo is
 
-`aver-demo` is the **public** demonstration of Aver, Wolvryn's agent output integrity assessment, and the hero proof on the Wolvryn site: a live agent pipeline that produces faulty outputs on demand and shows Aver catching them. Full design and rationale: `docs/decisions/ADR-001-demo-design.md` and `docs/decisions/ADR-002-exposure-boundary.md` (authoritative).
+`aver-demo` is the **public** demonstration of Aver, Wolvryn's agent output integrity assessment, and the hero proof on the Wolvryn site: a live agent pipeline that produces faulty outputs on demand and shows Aver catching them. Full design and rationale: `docs/decisions/ADR-001.md` and `docs/decisions/ADR-002.md` (authoritative).
 
 This repo contains the **pipeline** (two lanes), the **dual-pane UI**, and a thin **server-side client** that calls the Aver service. It does **not** contain Aver's detection logic — Aver lives in the private `aver` repo, is deployed as a separate service, and is invoked over HTTP.
 

@@ -99,6 +99,17 @@ export function getSourceApiConfig(): SourceApiConfig {
 }
 
 /**
+ * Returns the Finnhub API key used by the source-collection seam to fetch live quotes.
+ * Server-only; never exposed to the browser.
+ *
+ * @returns The Finnhub API key.
+ * @throws {Error} When FINNHUB_API_KEY is unset.
+ */
+export function getFinnhubApiKey(): string {
+  return readRequired('FINNHUB_API_KEY');
+}
+
+/**
  * Returns the Aver service URL and bearer token. Server-only; never reaches the browser.
  *
  * @returns The Aver service config.

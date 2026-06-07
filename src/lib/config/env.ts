@@ -1,5 +1,7 @@
 import 'server-only';
 
+import type { LogLevel } from '@/lib/logger/logger';
+
 /**
  * src/lib/config/env.ts
  *
@@ -20,6 +22,13 @@ export type AverServiceConfig = {
   readonly url: string;
   readonly token: string;
 };
+
+// ─── Constants ───────────────────────────────────────────────
+/** Supported log levels, in severity order. Typed against LogLevel so the set stays in sync. */
+const VALID_LOG_LEVELS: readonly LogLevel[] = ['error', 'warn', 'info', 'debug'];
+
+/** Production-safe default — never silently 'debug' (security skill: log level defaults to info). */
+const DEFAULT_LOG_LEVEL: LogLevel = 'info';
 
 // ─── Helpers ─────────────────────────────────────────────────
 /**
@@ -52,6 +61,17 @@ function readOptional(name: string): string | undefined {
     return undefined;
   }
   return value;
+}
+
+/**
+ * Type guard narrowing a raw string to a known LogLevel.
+ *
+ * @param value - The candidate level string.
+ * @returns True when value is one of the supported log levels.
+ * @throws {never}
+ */
+function isLogLevel(value: string): value is LogLevel {
+  return VALID_LOG_LEVELS.some((level) => level === value);
 }
 
 // ─── Accessors ───────────────────────────────────────────────
@@ -99,4 +119,20 @@ export function getAverServiceConfig(): AverServiceConfig {
  */
 export function getSentryDsn(): string | undefined {
   return readOptional('NEXT_PUBLIC_SENTRY_DSN');
+}
+
+/**
+ * Returns the configured log level. CONFIG, non-secret: defaults to 'info' when unset or
+ * unrecognized and never silently becomes 'debug' in production.
+ *
+ * @returns The validated log level, or 'info' by default.
+ * @throws {never}
+ */
+export function getLogLevel(): LogLevel {
+  const value = readOptional('LOG_LEVEL');
+  if (value === undefined) {
+    return DEFAULT_LOG_LEVEL;
+  }
+  const normalized = value.trim().toLowerCase();
+  return isLogLevel(normalized) ? normalized : DEFAULT_LOG_LEVEL;
 }

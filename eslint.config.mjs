@@ -21,6 +21,15 @@ const eslintConfig = [
     },
   },
 
+  // Centralized logging (CLAUDE.md / security skill): all logging goes through the centralized
+  // logger; no direct console anywhere. Build-failing gate, not a convention. The single
+  // permitted caller — src/lib/logger/** — is exempted by the override below.
+  {
+    rules: {
+      'no-console': 'error',
+    },
+  },
+
   // IP boundary (CLAUDE.md invariant 1 / ADR-002): the pipeline is Aver-unaware.
   // Nothing under src/pipeline/** may import the Aver client or any Aver package.
   // This is a build-failing lint gate, not a convention.
@@ -49,6 +58,14 @@ const eslintConfig = [
           ],
         },
       ],
+    },
+  },
+
+  // The centralized logger is the sole module permitted to call console (it owns the seam).
+  {
+    files: ['src/lib/logger/**/*.{ts,tsx}'],
+    rules: {
+      'no-console': 'off',
     },
   },
 

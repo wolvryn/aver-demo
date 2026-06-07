@@ -13,11 +13,6 @@ import type { LogLevel } from '@/lib/logger/logger';
  */
 
 // ─── Types ───────────────────────────────────────────────────
-export type SourceApiConfig = {
-  readonly apiKey: string;
-  readonly baseUrl: string | undefined;
-};
-
 export type AverServiceConfig = {
   readonly url: string;
   readonly token: string;
@@ -83,19 +78,6 @@ function isLogLevel(value: string): value is LogLevel {
  */
 export function getAnthropicApiKey(): string {
   return readRequired('ANTHROPIC_API_KEY');
-}
-
-/**
- * Returns the source-collection API credentials and optional base URL.
- *
- * @returns The source API config; baseUrl is undefined when unset.
- * @throws {Error} When SOURCE_API_KEY is unset.
- */
-export function getSourceApiConfig(): SourceApiConfig {
-  return {
-    apiKey: readRequired('SOURCE_API_KEY'),
-    baseUrl: readOptional('SOURCE_API_BASE_URL'),
-  };
 }
 
 /**
